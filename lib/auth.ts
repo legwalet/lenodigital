@@ -46,7 +46,6 @@ export const authOptions: NextAuthOptions = {
           name: `${user.firstName} ${user.lastName}`,
           role: user.role as UserRole,
           image: user.avatar,
-          profile: user.teacherProfile || user.parentProfile || user.studentProfile || user.adminProfile,
         }
       }
     })
@@ -59,7 +58,6 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id
         token.role = user.role
-        token.profile = user.profile
       }
       return token
     },
@@ -67,13 +65,11 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user.id = token.id as string
         session.user.role = token.role as UserRole
-        session.user.profile = token.profile as any
       }
       return session
     }
   },
   pages: {
     signIn: "/auth/signin",
-    signUp: "/auth/signup"
   }
 }

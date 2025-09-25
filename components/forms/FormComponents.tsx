@@ -19,7 +19,7 @@ import { ReactNode } from 'react'
 interface FormFieldProps<T extends FieldValues> {
   name: Path<T>
   label: string
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'datetime-local'
   placeholder?: string
   required?: boolean
   disabled?: boolean
@@ -118,7 +118,7 @@ export function Form<T extends FieldValues>({
 }: FormProps<T>) {
   const form = useForm<T>({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: defaultValues as any,
   })
 
   const handleSubmit = async (data: T) => {
