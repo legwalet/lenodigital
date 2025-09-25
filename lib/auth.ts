@@ -6,8 +6,7 @@ import bcrypt from "bcryptjs"
 import { UserRole } from "@/types"
 
 export const authOptions: NextAuthOptions = {
-  // Temporarily disable adapter to test credentials provider
-  // adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -17,11 +16,8 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.log('Missing credentials')
           return null
         }
-
-        console.log('Login attempt:', { email: credentials.email })
 
         try {
           // Find user in database
@@ -35,24 +31,16 @@ export const authOptions: NextAuthOptions = {
             },
           })
 
-          if (!user) {
-            console.log('User not found:', credentials.email)
-            return null
-          }
-
-          if (!user.password) {
-            console.log('User has no password set')
+          if (!user || !user.password) {
             return null
           }
 
           // Verify password
           const isValid = await bcrypt.compare(credentials.password, user.password)
           if (!isValid) {
-            console.log('Invalid password for:', credentials.email)
             return null
           }
 
-          console.log('Login successful:', { email: user.email, role: user.role })
           return {
             id: user.id,
             email: user.email,
