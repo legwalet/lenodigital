@@ -2,7 +2,12 @@
 
 import { useForm, UseFormReturn, FieldValues, Path } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { zodSchema } from '@/lib/validations'
+import { 
+  loginSchema, 
+  registerSchema, 
+  lessonSchema, 
+  assessmentSchema 
+} from '@/lib/validations'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -154,7 +159,7 @@ export function Form<T extends FieldValues>({
 export function LoginForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading?: boolean }) {
   return (
     <Form
-      schema={zodSchema.loginSchema}
+      schema={loginSchema}
       onSubmit={onSubmit}
       title="Sign In"
       description="Enter your credentials to access your account"
@@ -186,7 +191,7 @@ export function LoginForm({ onSubmit, isLoading }: { onSubmit: (data: any) => vo
 export function RegisterForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading?: boolean }) {
   return (
     <Form
-      schema={zodSchema.registerSchema}
+      schema={registerSchema}
       onSubmit={onSubmit}
       title="Create Account"
       description="Join LenoDigital and transform your educational experience"
@@ -267,7 +272,7 @@ export function LessonForm({ onSubmit, isLoading, defaultValues }: {
 }) {
   return (
     <Form
-      schema={zodSchema.lessonSchema}
+      schema={lessonSchema}
       onSubmit={onSubmit}
       defaultValues={defaultValues}
       title="Create Lesson"
@@ -315,7 +320,7 @@ export function AssessmentForm({ onSubmit, isLoading, defaultValues }: {
 }) {
   return (
     <Form
-      schema={zodSchema.assessmentSchema}
+      schema={assessmentSchema}
       onSubmit={onSubmit}
       defaultValues={defaultValues}
       title="Create Assessment"
