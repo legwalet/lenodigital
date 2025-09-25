@@ -6,8 +6,30 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  TEACHER
+  PARENT
+  STUDENT
+  SCHOOL_ADMIN
+  DISTRICT_ADMIN
+}
+
+enum AssessmentType {
+  MULTIPLE_CHOICE
+  SHORT_ANSWER
+  FILE_UPLOAD
+  ESSAY
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
 }
 
 model User {
@@ -16,7 +38,7 @@ model User {
   password  String?
   firstName String
   lastName  String
-  role      String   // TEACHER, PARENT, STUDENT, SCHOOL_ADMIN, DISTRICT_ADMIN
+  role      UserRole
   phone     String?
   avatar    String?
   isActive  Boolean  @default(true)
@@ -115,7 +137,7 @@ model TeacherProfile {
   id        String   @id @default(cuid())
   userId    String   @unique
   schoolId  String
-  subjects  String   // Comma-separated subject names
+  subjects  String[] // Array of subject names
   grade     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -150,7 +172,7 @@ model StudentProfile {
   parentId   String?
   studentNumber String @unique
   grade      String
-  subjects   String   // Comma-separated subject names
+  subjects   String[] // Array of subject names
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -224,7 +246,7 @@ model Lesson {
   description String?
   content     String   // Rich text content
   videoUrl    String?
-  attachments String   // Comma-separated file URLs
+  attachments String[] // Array of file URLs
   classId     String
   teacherId   String
   scheduledAt DateTime?
@@ -243,8 +265,8 @@ model Assessment {
   id          String   @id @default(cuid())
   title       String
   description String?
-  type        String   // MULTIPLE_CHOICE, SHORT_ANSWER, FILE_UPLOAD, ESSAY
-  questions   String   // JSON string of questions
+  type        AssessmentType
+  questions   Json     // JSON object of questions
   classId     String
   teacherId   String
   dueDate     DateTime?
@@ -266,7 +288,7 @@ model AssessmentSubmission {
   id           String   @id @default(cuid())
   assessmentId String
   studentId    String
-  answers      String   // JSON string of answers
+  answers      Json     // JSON object of answers
   score        Float?
   feedback     String?
   submittedAt  DateTime @default(now())
@@ -286,7 +308,7 @@ model Attendance {
   classId   String?
   lessonId  String?
   date      DateTime
-  status    String   // PRESENT, ABSENT, LATE, EXCUSED
+  status    AttendanceStatus
   notes     String?
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt

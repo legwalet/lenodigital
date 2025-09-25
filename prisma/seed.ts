@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, UserRole, AssessmentType, AttendanceStatus } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
@@ -66,7 +66,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Sarah',
       lastName: 'Johnson',
-      role: 'TEACHER',
+      role: UserRole.TEACHER,
       phone: '+27 82 123 4567',
     },
   })
@@ -77,7 +77,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Mike',
       lastName: 'Wilson',
-      role: 'TEACHER',
+      role: UserRole.TEACHER,
       phone: '+27 83 234 5678',
     },
   })
@@ -88,7 +88,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Thabo',
       lastName: 'Mthembu',
-      role: 'TEACHER',
+      role: UserRole.TEACHER,
       phone: '+27 84 345 6789',
     },
   })
@@ -100,7 +100,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Jane',
       lastName: 'Smith',
-      role: 'PARENT',
+      role: UserRole.PARENT,
       phone: '+27 85 456 7890',
     },
   })
@@ -111,7 +111,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'David',
       lastName: 'Brown',
-      role: 'PARENT',
+      role: UserRole.PARENT,
       phone: '+27 86 567 8901',
     },
   })
@@ -122,7 +122,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Nomfundo',
       lastName: 'Ndlovu',
-      role: 'PARENT',
+      role: UserRole.PARENT,
       phone: '+27 87 678 9012',
     },
   })
@@ -134,7 +134,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Alex',
       lastName: 'Smith',
-      role: 'STUDENT',
+      role: UserRole.STUDENT,
       phone: '+27 88 789 0123',
     },
   })
@@ -145,7 +145,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Emma',
       lastName: 'Brown',
-      role: 'STUDENT',
+      role: UserRole.STUDENT,
       phone: '+27 89 890 1234',
     },
   })
@@ -156,7 +156,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Sipho',
       lastName: 'Ndlovu',
-      role: 'STUDENT',
+      role: UserRole.STUDENT,
       phone: '+27 90 901 2345',
     },
   })
@@ -167,7 +167,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Lisa',
       lastName: 'Johnson',
-      role: 'STUDENT',
+      role: UserRole.STUDENT,
       phone: '+27 91 012 3456',
     },
   })
@@ -178,7 +178,7 @@ async function main() {
       password: hashedPassword,
       firstName: 'Tom',
       lastName: 'Wilson',
-      role: 'STUDENT',
+      role: UserRole.STUDENT,
       phone: '+27 92 123 4567',
     },
   })
@@ -190,7 +190,7 @@ async function main() {
     data: {
       userId: teacher1.id,
       schoolId: school1.id,
-      subjects: 'Mathematics,Science',
+      subjects: ['Mathematics', 'Science'],
       grade: 'Grade 6',
     },
   })
@@ -199,7 +199,7 @@ async function main() {
     data: {
       userId: teacher2.id,
       schoolId: school2.id,
-      subjects: 'English,History',
+      subjects: ['English', 'History'],
       grade: 'Grade 10',
     },
   })
@@ -208,7 +208,7 @@ async function main() {
     data: {
       userId: teacher3.id,
       schoolId: school3.id,
-      subjects: 'Geography,Life Sciences',
+      subjects: ['Geography', 'Life Sciences'],
       grade: 'Grade 11',
     },
   })
@@ -244,7 +244,7 @@ async function main() {
       parentId: parentProfile1.id,
       studentNumber: 'RPS2024001',
       grade: 'Grade 6',
-      subjects: 'Mathematics,Science,English,History,Geography',
+      subjects: ['Mathematics', 'Science', 'English', 'History', 'Geography'],
     },
   })
 
@@ -255,7 +255,7 @@ async function main() {
       parentId: parentProfile2.id,
       studentNumber: 'SPH2024002',
       grade: 'Grade 10',
-      subjects: 'English,History,Mathematics,Geography,Life Sciences',
+      subjects: ['English', 'History', 'Mathematics', 'Geography', 'Life Sciences'],
     },
   })
 
@@ -266,7 +266,7 @@ async function main() {
       parentId: parentProfile3.id,
       studentNumber: 'SSS2024003',
       grade: 'Grade 11',
-      subjects: 'Geography,Life Sciences,Mathematics,English,History',
+      subjects: ['Geography', 'Life Sciences', 'Mathematics', 'English', 'History'],
     },
   })
 
@@ -277,7 +277,7 @@ async function main() {
       parentId: parentProfile1.id,
       studentNumber: 'RPS2024004',
       grade: 'Grade 6',
-      subjects: 'Mathematics,Science,English,History,Geography',
+      subjects: ['Mathematics', 'Science', 'English', 'History', 'Geography'],
     },
   })
 
@@ -288,7 +288,7 @@ async function main() {
       parentId: parentProfile2.id,
       studentNumber: 'SPH2024005',
       grade: 'Grade 10',
-      subjects: 'English,History,Mathematics,Geography,Life Sciences',
+      subjects: ['English', 'History', 'Mathematics', 'Geography', 'Life Sciences'],
     },
   })
 
@@ -353,7 +353,7 @@ async function main() {
       description: 'Understanding basic fractions and their applications',
       content: 'Today we will learn about fractions, how to identify them, and basic operations.',
       videoUrl: 'https://example.com/video1.mp4',
-      attachments: 'fraction-worksheet.pdf,homework.pdf',
+      attachments: ['fraction-worksheet.pdf', 'homework.pdf'],
       classId: class1.id,
       teacherId: teacherProfile1.id,
       scheduledAt: new Date('2024-01-15T09:00:00Z'),
@@ -367,7 +367,7 @@ async function main() {
       description: 'Analysis of Shakespeare\'s most famous sonnets',
       content: 'We will explore the themes, structure, and literary devices in Shakespeare\'s sonnets.',
       videoUrl: 'https://example.com/video2.mp4',
-      attachments: 'sonnet-analysis.pdf',
+      attachments: ['sonnet-analysis.pdf'],
       classId: class2.id,
       teacherId: teacherProfile2.id,
       scheduledAt: new Date('2024-01-16T10:00:00Z'),
@@ -381,7 +381,7 @@ async function main() {
       description: 'Understanding global climate systems',
       content: 'Exploring how climate change affects weather patterns globally.',
       videoUrl: 'https://example.com/video3.mp4',
-      attachments: 'climate-data.xlsx,research-paper.pdf',
+      attachments: ['climate-data.xlsx', 'research-paper.pdf'],
       classId: class3.id,
       teacherId: teacherProfile3.id,
       scheduledAt: new Date('2024-01-17T11:00:00Z'),
@@ -396,8 +396,8 @@ async function main() {
     data: {
       title: 'Fractions Quiz',
       description: 'Test your understanding of basic fractions',
-      type: 'MULTIPLE_CHOICE',
-      questions: JSON.stringify([
+      type: AssessmentType.MULTIPLE_CHOICE,
+      questions: [
         {
           id: 1,
           question: 'What is 1/2 + 1/4?',
@@ -410,7 +410,7 @@ async function main() {
           options: ['2/3', '3/4', 'They are equal', 'Cannot determine'],
           correctAnswer: '3/4',
         },
-      ]),
+      ],
       classId: class1.id,
       teacherId: teacherProfile1.id,
       dueDate: new Date('2024-01-20T23:59:59Z'),
@@ -424,15 +424,15 @@ async function main() {
     data: {
       title: 'Sonnet Analysis Essay',
       description: 'Write an analysis of a Shakespearean sonnet',
-      type: 'ESSAY',
-      questions: JSON.stringify([
+      type: AssessmentType.ESSAY,
+      questions: [
         {
           id: 1,
           question: 'Analyze the theme of love in Sonnet 18. Include specific examples from the text.',
           type: 'essay',
           wordLimit: 500,
         },
-      ]),
+      ],
       classId: class2.id,
       teacherId: teacherProfile2.id,
       dueDate: new Date('2024-01-25T23:59:59Z'),
@@ -449,10 +449,10 @@ async function main() {
     data: {
       assessmentId: assessment1.id,
       studentId: studentProfile1.id,
-      answers: JSON.stringify([
+      answers: [
         { questionId: 1, answer: '3/4' },
         { questionId: 2, answer: '3/4' },
-      ]),
+      ],
       score: 100.0,
       feedback: 'Excellent work! You have a strong understanding of fractions.',
       submittedAt: new Date('2024-01-18T14:30:00Z'),
@@ -464,12 +464,12 @@ async function main() {
     data: {
       assessmentId: assessment2.id,
       studentId: studentProfile2.id,
-      answers: JSON.stringify([
+      answers: [
         {
           questionId: 1,
           answer: 'Sonnet 18 explores the theme of eternal love through the metaphor of comparing the beloved to a summer\'s day...',
         },
-      ]),
+      ],
       score: 85.0,
       feedback: 'Good analysis with solid examples. Consider exploring the metaphor more deeply.',
       submittedAt: new Date('2024-01-24T16:45:00Z'),
@@ -485,33 +485,33 @@ async function main() {
       studentId: studentProfile1.id,
       classId: class1.id,
       date: new Date('2024-01-15T09:00:00Z'),
-      status: 'PRESENT',
+      status: AttendanceStatus.PRESENT,
     },
     {
       studentId: studentProfile4.id,
       classId: class1.id,
       date: new Date('2024-01-15T09:00:00Z'),
-      status: 'LATE',
+      status: AttendanceStatus.LATE,
       notes: 'Arrived 10 minutes late due to traffic',
     },
     {
       studentId: studentProfile2.id,
       classId: class2.id,
       date: new Date('2024-01-16T10:00:00Z'),
-      status: 'PRESENT',
+      status: AttendanceStatus.PRESENT,
     },
     {
       studentId: studentProfile5.id,
       classId: class2.id,
       date: new Date('2024-01-16T10:00:00Z'),
-      status: 'ABSENT',
+      status: AttendanceStatus.ABSENT,
       notes: 'Sick leave',
     },
     {
       studentId: studentProfile3.id,
       classId: class3.id,
       date: new Date('2024-01-17T11:00:00Z'),
-      status: 'PRESENT',
+      status: AttendanceStatus.PRESENT,
     },
   ]
 

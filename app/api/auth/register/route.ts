@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
           data: {
             userId: user.id,
             schoolId: school.id,
-            subjects: 'Mathematics,Science', // Default subjects
+            subjects: ['Mathematics', 'Science'], // Array of subjects
             grade: 'Grade 6',
           },
         })
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
             schoolId: school.id,
             studentNumber,
             grade: 'Grade 6', // Default grade
-            subjects: 'Mathematics,Science,English,History,Geography',
+            subjects: ['Mathematics', 'Science', 'English', 'History', 'Geography'],
           },
         })
       }
