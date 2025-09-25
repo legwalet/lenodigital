@@ -45,7 +45,7 @@ export function Chart({
   height = 300,
   className,
 }: ChartProps) {
-  const renderChart = () => {
+  const renderChart = (): React.ReactElement => {
     switch (type) {
       case 'bar':
         return (
@@ -102,7 +102,11 @@ export function Chart({
         )
 
       default:
-        return null
+        return (
+          <div className="flex items-center justify-center h-full text-gray-500">
+            <p>Unsupported chart type: {type}</p>
+          </div>
+        )
     }
   }
 
