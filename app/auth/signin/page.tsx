@@ -23,20 +23,27 @@ export default function SignInPage() {
     e.preventDefault()
     setIsLoading(true)
 
+    console.log('Login attempt with:', { email, password: '***' })
+
     try {
+      console.log('Calling signIn with credentials')
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
       })
 
+      console.log('SignIn result:', result)
+
       if (result?.error) {
+        console.log('Login failed:', result.error)
         toast({
           title: "Error",
           description: "Invalid email or password",
           variant: "destructive",
         })
       } else {
+        console.log('Login successful')
         toast({
           title: "Success",
           description: "Signed in successfully",
@@ -44,6 +51,7 @@ export default function SignInPage() {
         router.push('/dashboard')
       }
     } catch (error) {
+      console.error('Login error:', error)
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",

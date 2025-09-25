@@ -32,7 +32,10 @@ export default function SignUpPage() {
     e.preventDefault()
     setIsLoading(true)
 
+    console.log('Form submitted with data:', formData)
+
     if (formData.password !== formData.confirmPassword) {
+      console.log('Passwords do not match')
       toast({
         title: "Error",
         description: "Passwords do not match",
@@ -43,6 +46,7 @@ export default function SignUpPage() {
     }
 
     try {
+      console.log('Sending request to /api/auth/register')
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
@@ -51,21 +55,27 @@ export default function SignUpPage() {
         body: JSON.stringify(formData),
       })
 
+      console.log('Response status:', response.status)
+      const result = await response.json()
+      console.log('Response data:', result)
+
       if (response.ok) {
+        console.log('Registration successful')
         toast({
           title: "Success",
           description: "Account created successfully. Please sign in.",
         })
         router.push('/auth/signin')
       } else {
-        const error = await response.json()
+        console.log('Registration failed:', result)
         toast({
           title: "Error",
-          description: error.message || "Something went wrong. Please try again.",
+          description: result.message || "Something went wrong. Please try again.",
           variant: "destructive",
         })
       }
     } catch (error) {
+      console.error('Registration error:', error)
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
